@@ -1,0 +1,22 @@
+{
+  "name": "mimo-ql",
+  "version": "0.0.1",
+  "description": "Mimo GraphQL Starter Kit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ethmimo/mimo-ql.git"
+  },
+  "author": "@ghiliweld",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ethmimo/mimo-ql/issues"
+  },
+  "homepage": "https://github.com/ethmimo/mimo-ql#readme",
+  "dependencies": {
+    "graphql-yoga": "^1.16.9"
+  }
+}
