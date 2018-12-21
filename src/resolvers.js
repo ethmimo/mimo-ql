@@ -12,12 +12,13 @@ const followsProfile = profileId => getAllProfiles().filter(p => p.following.inc
 
 const save = profile => profiles[profile.id] = profile;
 
-const changeBio = function(profile, bio) {
-  profile.bio = bio;
+const updateProfile = function(data, sig) {
+  data = JSON.parse(data);
+  const profile = getProfile(data.id);
+  Object.assign(profile, data);
+  save(profile);
   return profile;
 }
-
-const updateProfile = (id, bio,sig) => changeBio(getProfile(id), bio);
 
 const resolvers = {
   Query: {
@@ -29,12 +30,13 @@ const resolvers = {
     followsProfile: (_, { id }) => followsProfile(id),
   },
   Mutation: {
-    updateProfile: (_, { id, bio, sig }) => updateProfile(id, bio, sig)
+    updateProfile: (_, { data, sig }) => updateProfile(data, sig)
   },
   Profile: {
     id: (root) => root.id,
     name: (root) => root.name,
     bio: (root) => root.bio,
+    location: (root) => root.location,
     following: (root) => root.following
   }
 };

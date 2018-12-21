@@ -2,6 +2,7 @@ type Profile {
   id: String
   name: String
   bio: String
+  location: String
   following: [String]
 }
 
@@ -15,7 +16,7 @@ type Query {
 }
 
 type Mutation {
-  updateProfile(id: String!, bio: String, sig: String): Profile!
+  updateProfile(data: String!, sig: String!): Profile!
 }
 
 schema {
