@@ -10,6 +10,15 @@ const profileFollows = profileId => profiles[profileId].following;
 
 const followsProfile = profileId => getAllProfiles().filter(p => p.following.includes(profileId));
 
+const save = profile => profiles[profile.id] = profile;
+
+const changeBio = function(profile, bio) {
+  profile.bio = bio;
+  return profile;
+}
+
+const updateProfile = (id, bio,sig) => changeBio(getProfile(id), bio);
+
 const resolvers = {
   Query: {
     description: () => 'Mimo GraphQL API',
@@ -18,6 +27,9 @@ const resolvers = {
     allProfiles: () => getAllProfiles(),
     profileFollows: (_, { id }) => profileFollows(id),
     followsProfile: (_, { id }) => followsProfile(id),
+  },
+  Mutation: {
+    updateProfile: (_, { id, bio, sig }) => updateProfile(id, bio, sig)
   },
   Profile: {
     id: (root) => root.id,

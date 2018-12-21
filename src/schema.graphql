@@ -1,3 +1,10 @@
+type Profile {
+  id: String
+  name: String
+  bio: String
+  following: [String]
+}
+
 type Query {
   description: String!
   allProfiles: [Profile]!
@@ -7,13 +14,11 @@ type Query {
   followsProfile(id: String!):[Profile]!
 }
 
-type Profile {
-  id: String
-  name: String
-  bio: String
-  following: [String]
+type Mutation {
+  updateProfile(id: String!, bio: String, sig: String): Profile!
 }
 
 schema {
   query: Query
+  mutation: Mutation
 }

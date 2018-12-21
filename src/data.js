@@ -4,8 +4,8 @@ const profiles = {
     name: "ghili",
     bio: "Ghili aka Black Elon aka Your Girl's Goshujin-sama",
     following: [
-      "0xblok",
-      "0xjoe"
+        "0xblok",
+        "0xaunyks"
     ]
   },
   "0xblok": {
@@ -13,8 +13,8 @@ const profiles = {
     name: "blokboy",
     bio: "applied cryptography + a lil smart contract engineering",
     following: [
-      "0xghili",
-      "0xjoe"
+        "0xghili",
+        "0xaunyks"
     ]
   },
   "0xaunyks": {
@@ -22,8 +22,8 @@ const profiles = {
     name: "aunyks",
     bio: "Howard '21. Engineer incoming",
     following: [
-      "0xblok",
-      "0xghili"
+        "0xblok",
+        "0xghili"
     ]
   }
 };
