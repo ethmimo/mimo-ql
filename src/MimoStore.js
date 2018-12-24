@@ -39,6 +39,10 @@ class MimoStore extends KeyValueStore {
     super.get(id);
   }
 
+  all() {
+    this._index;
+  }
+
   del(name, signature) {
     const signer = recover('delete profile: ${name}', signature);
     const id = getID(name, signer);
