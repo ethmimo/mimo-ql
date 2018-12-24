@@ -2,20 +2,12 @@ type Profile {
   id: String
   name: String
   bio: String
-  following: [String]
 }
 
 type Query {
   description: String!
   allProfiles: [Profile]
-  profiles(ids: [String]!): [Profile]
   profile(id: String!): Profile
-  profileFollows(id: String!): [String]
-  followsProfile(id: String!):[Profile]
-}
-
-type Mutation {
-  updateProfile(data: String!, sig: String!): Profile!
 }
 
 schema {

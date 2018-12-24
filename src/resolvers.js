@@ -5,13 +5,12 @@ const setupResolvers = db => {
     Query: {
       description: () => 'Mimo GraphQL API',
       profile: (_, { id }) => db.get(id),
+      allProfiles: (_, { }) => db.all()
     },
     Profile: {
       id: (root) => root.id,
       name: (root) => root.name,
       bio: (root) => root.bio,
-      location: (root) => root.location,
-      following: (root) => root.following
     }
   };
 
@@ -19,12 +18,11 @@ const setupResolvers = db => {
 }
 
 // this function will load a db and initiate our resolvers to be exported
-function initResolvers() {
+async function initResolvers() {
 
-  loadDB().then(function(db) {
-     return setupResolvers(db);
-  });
+  let resolvers = await loadDB().then(db => setupResolvers(db)).catch(e => console.log(e));
 
+  return resolvers;
 };
 
 module.exports = initResolvers;
