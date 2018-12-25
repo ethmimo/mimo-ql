@@ -22,31 +22,38 @@ class MimoStore extends KeyValueStore {
   /*** Add data to a profile
    *
    * @param     {Object}    data       The new data to be added to the profile
-   * @param     {String}    signature        A signature of the data
+   * @param     {String}    signature  A signature of the data
    */
-  put(data, signature) {
+  async put(data, signature) {
     if (!data) throw new Error('Data must be included');
     if (!data.name) throw new Error('A name must be included');
     if (!signature) throw new Error('A signature must be included');
-    const signer = recover(data, signature);
-    data.id = getID(data.name, signer);
-    const profile = this.get(data.id);
-    Object.assign(profile, data);
-    super.put(data.id, profile);
+    const signer = this.recover(data, signature);
+    data.id = await this.getID(data.name, signer);
+    let profile = await this.get(data.id);
+    
+    profile = Object.assign((profile == null ? {} : profile), data);
+    
+    // Register and add profile
+    if(!this.isRegistered(data.name, data.id)){
+      await this.register(data.name, profile)
+    }else{
+      await super.put(data.id, profile);
+    }
   }
 
-  get(id) {
-    super.get(id);
+  async get(id) {
+    return await super.get(id);
   }
 
   all() {
-    this._index;
+    return Object.keys(this._index._index).map(p => this._index._index[p], this)
   }
 
-  del(name, signature) {
+  async del(name, signature) {
     const signer = recover('delete profile: ${name}', signature);
     const id = getID(name, signer);
-    super.del(id);
+    await super.del(id);
   }
 
   /**
@@ -56,10 +63,23 @@ class MimoStore extends KeyValueStore {
    * @param     {String}    signature          A signature of the data
    * @returns   {Boolean}                Was the data signed by the owner?
    */
-  isRegistered(name, owner) {
-    const id = getID(name, owner);
-    const profile = this.get(id);
+  async isRegistered(name, owner) {
+    const id = this.getID(name, owner);
+    const profile = await this.get(id);
     return profile != undefined;
+  }
+
+  /*
+   * Register a profile
+   *
+   * @param     {String}    name         The data we signed
+   * @param     {Object}    profile      Data we want to add
+   */
+  async register(name, profile) {
+    const id = this.getID(name, profile);
+    console.log('id');
+    console.log(id);
+    await super.put(id, profile);
   }
 
   /**
@@ -82,11 +102,10 @@ class MimoStore extends KeyValueStore {
    */
   recover(data, signature) {
     if (data instanceof String) {
-      EthCrypto.recover(signature, EthCrypto.hash.keccak256(data));
+      return EthCrypto.recover(signature, EthCrypto.hash.keccak256(data));
     } else {
-      EthCrypto.recover(signature, EthCrypto.hash.keccak256(JSON.stringify(data)));
+      return EthCrypto.recover(signature, EthCrypto.hash.keccak256(JSON.stringify(data)));
     }
-
   }
 
   /**

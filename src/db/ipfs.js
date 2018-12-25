@@ -2,7 +2,7 @@ const IPFS = require("ipfs");
 
 // Configuration for IPFS instance
 const ipfsConfig = {
-  repo: './orbit/ipfs',
+  repo: '../../orbit/ipfs',
   start: true,
   EXPERIMENTAL: {
     pubsub: true,
