@@ -1,0 +1,21 @@
+type Profile {
+  id: String
+  name: String
+  bio: String
+}
+
+type Query {
+  description: String!
+  db_address: String!
+  allProfiles: [Profile]
+  profile(id: String!): Profile
+}
+
+type Mutation {
+  updateProfile(signature: String!, data: String!): Profile
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}
