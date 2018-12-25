@@ -1,0 +1,22 @@
+type Profile {
+  id: String
+  name: String
+  bio: String
+}
+
+type Query {
+  description: String!
+  allProfiles: [Profile]
+  profile(id: String!): Profile
+}
+
+type Mutation {
+	createProfile(id: String!, name: String!, bio: String!, sig: String!): Profile!
+	# addFollow(follows_by_id: String!, follows_id: String!): Boolean!
+	# updateBio(id: String!, bio: String!): Profile!
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}
