@@ -47,7 +47,7 @@ class MimoStore extends KeyValueStore {
   }
 
   all() {
-    return Object.keys(this._index._index).map(p => this._index._index[p], this)
+    return Object.values(this._index._index)
   }
 
   async del(name, signature) {
