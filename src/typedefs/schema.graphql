@@ -8,7 +8,10 @@ type Query {
   description: String!
   db_address: String!
   allProfiles: [Profile]
-  profile(id: String!): Profile
+  getProfile(id: String!): Profile
+  # getProfilesByName(name: String!): [Profile]
+  # isProfileRegistered(name: String!): Boolean!
+  # getProfileByEmoji(emojis: String!): Profile
 }
 
 type Mutation {

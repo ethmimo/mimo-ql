@@ -23,7 +23,8 @@
     "graphql-yoga": "^1.16.9",
     "ipfs": "^0.33.1",
     "merge-graphql-schemas": "^1.5.8",
-    "orbit-db": "^0.19.9"
+    "orbit-db": "^0.19.9",
+    "web3-emojihash": "^1.0.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",

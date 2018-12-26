@@ -11,7 +11,7 @@ async function init() {
     resolvers: resolvers
   });
 
-  server.start({ port: 8000 }, ({ port }) => console.log(`Server started, listening on port ${port} for incoming requests.`));
+  server.start(() => console.log(`The server is running on http://localhost:4000`));
 };
 
 init().catch(e => console.log(e));
