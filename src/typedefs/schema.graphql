@@ -10,8 +10,9 @@ type Query {
   allProfiles: [Profile]
   getProfile(id: String!): Profile
   # getProfilesByName(name: String!): [Profile]
-  # isProfileRegistered(name: String!): Boolean!
+  # isNameRegistered(name: String!): Boolean!
   # getProfileByEmoji(emojis: String!): Profile
+  # resolveENSName(name: String!): Profile
 }
 
 type Mutation {

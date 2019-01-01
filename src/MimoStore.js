@@ -15,8 +15,14 @@ class MimoStore extends KeyValueStore {
     this._type = MimoStore.type;
   }
 
-  async set (data, signature) {
+  async set (signature, data) {
     throw new Error('set cannot be called directly');
+  }
+
+  async del() {
+    const id = this.recover(signature, `delete profile: ${address}`);
+    if (id != address) throw new Error('The provided Address and generated ID do not match');
+    super.del(id);
   }
 
   /*** Add data to a profile
@@ -25,26 +31,30 @@ class MimoStore extends KeyValueStore {
    * @param     {String}    signature        A signature of the data
    */
   async put(signature, data) {
-    // if (!data) throw new Error('Data must be included');
-    // if (!signature) throw new Error('A signature must be included');
+    if (!(data instance of String)) throw new Error('Data must be included and be a string');
+    if (!(signature instance of String)) throw new Error('A signature must be included');
+
     try {
+
       const id = this.recover(signature, data);
       const json = JSON.parse(data);
-      // if (json.id != id) throw new Error('Wrong ID generated');
+
       let profile = await this.get(id);
       profile = Object.assign((profile == null ? {} : profile), json);
-      return this._addOperation({
-      op: 'PUT',
-      key: id,
-      value: profile
-    })
+      return { id, super.put(id, profile) }; // TODO: will this work?
+
     } catch (e) {
-      console.log(e);
+      throw new Error(e);
     }
+
   }
 
   all() {
     return Object.values(this._index._index);
+  }
+
+  allIDs() {
+    return Object.keys(this._index._index);
   }
 
   /**

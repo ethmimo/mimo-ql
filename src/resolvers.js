@@ -1,35 +1,27 @@
 const loadDB = require('./db.js');
-const emojihash = require('web3-emojihash');
+const Web3 = require('web3');
+const Mimo = require('./mimo.js');
 
-const setupResolvers = db => {
+const setupResolvers = db, web3 => {
   const resolvers = {
     Query: {
       description: () => 'Mimo GraphQL API',
-      db_address: () => db.address.toString(),
-      getProfile: async (_, { id }) => db.get(id),
-      allProfiles: async (_, { }) => db.all(id),
-      // getProfilesByName: async (_, { name }) => db.all(id).filter(p => p.name = name),
-      // getProfileByEmoji: async (_, { emojis }) => db.all(id).find(p => emojihash(p.id) = emojis),
-      // isProfileRegistered: async (_, { name }) => getProfilesByName().then(ps => ps.length > 0)
-      // ^^^ can I do this?
+      db_address: () => Mimo.address(db),
+      getProfile: async (_, { id }) => Mimo.getProfile(db, id),
+      getProfiles: async (_, { ids }) => Mimo.getProfiles(db, ids),
+      allProfiles: async (_, { }) => Mimo.allProfiles(db, id),
+      getProfilesByName: async (_, { name }) => Mimo.getProfilesByName(db, name),
+      getProfileByEmoji: async (_, { emojis }) => Mimo.getProfileByEmoji(db, emojis),
+      isNameRegistered: async (_, { name }) => Mimo.isNameRegistered(db, name),
+      resolveENSName: async (_, { ensname }) => Mimo.isNameRegistered(db, web3, ensname)
     },
     Mutation: {
-      updateProfile: async (_, { signature, data }) => {
-        try{
-          const id = JSON.parse(data).id;
-          if (!id) throw new Error('Please include an ID in data')
-          await db.put(signature, data);
-          const profile = await db.get(id);
-          return profile;
-        }catch(e){
-          throw new Error(e);
-        }
-      }
+      updateProfile: async (_, { signature, data }) => Mimo.updateProfile(db, signature, data)
     },
     Profile: {
       id: (root) => root.id,
       name: (root) => root.name,
-      bio: (root) => root.bio,
+      bio: (root) => root.bio
     }
   };
 
@@ -37,9 +29,9 @@ const setupResolvers = db => {
 }
 
 // this function will load a db and initiate our resolvers to be exported
-async function initResolvers() {
+async function initResolvers(web3 = {}) {
 
-  let resolvers = await loadDB().then(db => setupResolvers(db)).catch(e => console.log(e));
+  let resolvers = await loadDB().then(db => setupResolvers(db, web3)).catch(e => console.log(e));
 
   return resolvers;
 };
